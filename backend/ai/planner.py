@@ -1,5 +1,6 @@
 from backend.ai.prompts import build_meal_plan_prompt
 from backend.config import get_client
+import parser
 
 def get_user_preferences() -> dict:
     print("=== Meal Planner Setup ===\n")
@@ -29,15 +30,16 @@ def get_user_preferences() -> dict:
 
 
 
-def generate_meal_plan(preferences: dict) -> str:
+def generate_meal_plan(preferences: dict) -> dict:
     system_prompt, user_prompt = build_meal_plan_prompt(preferences)
     client = get_client()
 
     full_prompt = f"{system_prompt}\n\n{user_prompt}"
 
-    response = client.models.generate_content(
+    fetcher  = lambda : client.models.generate_content(
         model="gemini-2.5-flash",
         contents=full_prompt
-    )
-    return response.text
+    ).text
+    return parser.call_with_retry(fetcher)
+    
     
