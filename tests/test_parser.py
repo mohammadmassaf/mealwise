@@ -35,15 +35,16 @@ def test_wrong_number_of_days():
         with pytest.raises(ValueError):
             parser.validate_meal_plan(invalidDict)   
 
-def test_valid_LLM_result():
-    result = parser.parse_llm_response('{"week": []}')
-    assert isinstance(result, dict)
-    assert "week" in result  
 def test_valid_JSON_Format():
     result = parser.parse_llm_response('```json {"week": []}```')
     assert isinstance(result,dict)
-    assert not result.startswith("```json") and result.endswith("```")
+    assert "week" in result
 
 def test_Value_error():
      with pytest.raises(ValueError):
           parser.parse_llm_response('{"week": []}')
+
+def test_fence_stripping():
+    fenced   = parser.parse_llm_response('```json\n{"week": []}\n```')
+    unfenced = parser.parse_llm_response('{"week": []}')
+    assert fenced == unfenced

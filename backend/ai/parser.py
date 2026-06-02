@@ -8,6 +8,7 @@ def parse_llm_response(raw:str) -> dict:
     Parses a raw JSON string returned by the LLM into a Python dict.
     Raises ValueError if the string is not valid JSON.
     """
+    raw = raw.strip()
     if raw.startswith("```json") and raw.endswith("```"):
         raw = raw[7:-3].strip()
    
@@ -78,23 +79,23 @@ def call_with_retry(func,max_retries = 3):
             # 1. Call function and parse/validate the result
             result = func()
             parsed_result = parse_llm_response(result)
-            if(validate_meal_plan(parsed_result)):
-                return parsed_result
-            else:
-                raise ValueError("Validation failed")
+            validate_meal_plan(parsed_result) 
+            return parsed_result
+            
+               
 
-        except Exception as e : 
+        except requests.HTTPError as e : 
             # Check for 401: Give up immediately
-            if "401" in str(e):
+            if e.response.status_code == 401:
                 print("401 Error: Unauthorized. Giving up immediately.")
                 raise e
             # Check for 503: Exponential backoff
-            elif "503" in str(e):
-                if attempt == max_retries - 1:   # no more attempts left
-                    raise e
-                wait_time = 2 ** attempt
-                print(f"503 Error: Retrying in {wait_time}s...")
-                time.sleep(wait_time)
+            elif e.response.status_code == 503:
+                if attempt < max_retries - 1:   # no more attempts left
+                    wait_time = 2 ** attempt
+                    print(f"503 Error: Retrying in {wait_time}s...")
+                    time.sleep(wait_time)
+                    continue 
             # Handle other unexpected errors
             else:
                 print(f"Unexpected error encountered: {e}")
