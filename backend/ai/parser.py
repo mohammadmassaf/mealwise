@@ -86,11 +86,11 @@ def call_with_retry(func,max_retries = 3):
 
         except requests.HTTPError as e : 
             # Check for 401: Give up immediately
-            if e.response.status_code == 401:
+            if "401" in str(e):
                 print("401 Error: Unauthorized. Giving up immediately.")
                 raise e
             # Check for 503: Exponential backoff
-            elif e.response.status_code == 503:
+            elif "503" in str(e):
                 if attempt < max_retries - 1:   # no more attempts left
                     wait_time = 2 ** attempt
                     print(f"503 Error: Retrying in {wait_time}s...")

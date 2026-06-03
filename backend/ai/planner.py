@@ -1,6 +1,7 @@
 from backend.ai.prompts import build_meal_plan_prompt
 from backend.config import get_client
-import parser
+from . import parser
+
 
 def get_user_preferences() -> dict:
     print("=== Meal Planner Setup ===\n")
@@ -42,4 +43,8 @@ def generate_meal_plan(preferences: dict) -> dict:
     ).text
     return parser.call_with_retry(fetcher)
     
+if __name__ == "__main__":
+    preferences = get_user_preferences()
+    meal_plan = generate_meal_plan(preferences)
+    print(meal_plan)
     
