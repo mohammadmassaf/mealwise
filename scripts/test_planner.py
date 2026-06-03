@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))  # ← fixes the import issue
 
-from backend.ai.planner import get_user_preferences, generate_meal_plan
+from mealwise.backend.app.services.planner import get_user_preferences, generate_meal_plan
 
 if __name__ == "__main__":
     prefs = get_user_preferences()
