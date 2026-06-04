@@ -7,6 +7,7 @@ class Meal(BaseModel):
     ingredients: list[str] 
     calories: int
     time_to_cook: Optional[int]  
+    recipe: Optional[str] = None
     pass
 
 class DayPlan(BaseModel):

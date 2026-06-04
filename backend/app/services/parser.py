@@ -1,6 +1,7 @@
 import json
 import requests
 import time 
+from app.models.meal import MealPlan,Meal,DayPlan
 
 def parse_llm_response(raw:str) -> dict:
     """
@@ -49,3 +50,14 @@ def call_with_retry(func,max_retries = 3, days: int = 7):
                 time.sleep(2 ** attempt)
                 continue
             raise RuntimeError(f"Max retries reached: {e}")
+        
+
+def dict_to_meal_plan(data:dict) -> MealPlan:
+        days = []
+        for week in data["week"]:
+            meals = []
+            for  meal  in week["meals"].values():
+                meals.append(Meal(name=meal["name"], ingredients=meal["ingredients"],
+                                   calories=meal["calories"], time_to_cook=meal["time_to_cook"]) , recipe= meal["recipe"])
+            days.append(DayPlan(day=week["day"], meals = meals))
+        return MealPlan(num_days = len(data["week"]) , plan = days)
