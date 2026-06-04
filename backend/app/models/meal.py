@@ -1,12 +1,34 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class MealPlanRequest(BaseModel):
-    days: int
-    dietary_preference: Optional[str] = None
-    calories_per_day: Optional[int] = None
-    cuisine: Optional[str] = None       
 
-class MealPlanResponse(BaseModel):
-    plan: str
-    days: int
+class Meal(BaseModel):
+    name: str   
+    ingredients: list[str] 
+    calories: int
+    time_to_cook: Optional[int]  
+    pass
+
+class DayPlan(BaseModel):
+    day:str
+    meals:list[Meal]
+    pass
+
+class MealPlan(BaseModel):
+    num_days:int
+    plan:list[DayPlan]
+
+class PreferenceRequest(BaseModel):
+        prep_time: Optional[int] = 45
+        allergies: Optional[list[str]] = None
+        cuisines: Optional[list[str]] = None
+        days: int
+        calories_per_day:Optional[int] = 2300
+        diet:Optional[str] = None
+class RegenerateDayRequest(BaseModel):
+     day:int
+     preferences: PreferenceRequest
+
+class ErrorResponse(BaseModel):
+     message:str
+     status_code: int 
