@@ -19,8 +19,6 @@ async def plan_meals(request: PreferenceRequest):
         result.start_date = request.start_date
         meal_plans[plan_id] =result
         return PlanResponse(id = plan_id , plan = result)
-    except GeminiUnavailableError:
-        raise HTTPException(status_code=503, detail="Gemini service is currently unavailable")
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -40,14 +38,12 @@ async def regenerate_day(id: str, request: RegenerateDayRequest) ->MealPlan:
     if original_start:
         day_date = original_start + timedelta(days=request.day - 1)
         request.preferences.start_date = day_date
-    request.preferences.days = 1
+        request.preferences.days = 1
     try:
         result = await generate_meal_plan(request.preferences)
         meal.plan[request.day - 1] = result.plan[0]
         meal_plans[id] = meal
         return meal
-    except GeminiUnavailableError:
-        raise HTTPException(status_code=503, detail="Gemini service is currently unavailable")
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
     
