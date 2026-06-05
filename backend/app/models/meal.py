@@ -30,7 +30,6 @@ class RegenerateDayRequest(BaseModel):
      day:int
      preferences: PreferenceRequest
 
-
 class PlanResponse(BaseModel):
         id: str
         plan: MealPlan

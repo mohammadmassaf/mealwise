@@ -14,8 +14,7 @@ async def generate_meal_plan(request: PreferenceRequest) -> MealPlan:
         model="gemini-2.5-flash",
         contents=full_prompt
     ).text
-    
-    result =await asyncio.to_thread(parser.call_with_retry(fetcher, days=request.days))
+    result = await asyncio.to_thread(parser.call_with_retry, fetcher, days=request.days) 
     return parser.dict_to_meal_plan(result)
 
     
