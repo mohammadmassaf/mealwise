@@ -1,12 +1,12 @@
 from pydantic_settings import BaseSettings
+from pydantic import ConfigDict
 from google import genai
 from pathlib import Path
 
 class Settings(BaseSettings):
+    model_config = ConfigDict(env_file=str(Path(__file__).resolve().parent.parent.parent.parent / ".env"))
+    
     google_api_key: str
-
-    class Config:
-        env_file = Path(__file__).resolve().parent.parent.parent.parent / ".env"
 
 settings = Settings()
 
