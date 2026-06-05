@@ -30,6 +30,10 @@ class RegenerateDayRequest(BaseModel):
      day:int
      preferences: PreferenceRequest
 
+
+class PlanResponse(BaseModel):
+        id: str
+        plan: MealPlan
 class ErrorResponse(BaseModel):
      message:str
      status_code: int 
