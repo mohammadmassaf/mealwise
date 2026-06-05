@@ -16,7 +16,7 @@ def build_meal_plan_prompt(request:PreferenceRequest) -> tuple:
           """
     system_prompt = f"""You are a professional nutritionist and meal planning expert.
     Return JSON only, no markdown, no explanation.
-          Use this exact structure:
+          Use this exact structure: (Always use metric measurements (grams, ml) for all ingredients.)
           {{
             "week": [
               {{

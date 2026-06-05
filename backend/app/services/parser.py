@@ -58,6 +58,6 @@ def dict_to_meal_plan(data:dict) -> MealPlan:
             meals = []
             for  meal  in week["meals"].values():
                 meals.append(Meal(name=meal["name"], ingredients=meal["ingredients"],
-                                   calories=meal["calories"], time_to_cook=meal["time_to_cook"]) , recipe= meal["recipe"])
+                                   calories=meal["calories"], time_to_cook=meal["time_to_cook"], recipe= meal["recipe"]))
             days.append(DayPlan(day=week["day"], meals = meals))
         return MealPlan(num_days = len(data["week"]) , plan = days)
