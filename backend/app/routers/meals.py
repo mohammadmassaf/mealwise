@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException
 from app.models.meal import MealPlan, PreferenceRequest, RegenerateDayRequest,PlanResponse
 from app.services.planner import generate_meal_plan
 from app.exceptions import GeminiUnavailableError
+from datetime import timedelta
 
 
 router = APIRouter(prefix="/meals", tags=["meals"])
@@ -15,6 +16,7 @@ async def plan_meals(request: PreferenceRequest):
     try:
         result =await  generate_meal_plan(request)
         plan_id = str(uuid.uuid4()) 
+        result.start_date = request.start_date
         meal_plans[plan_id] =result
         return PlanResponse(id = plan_id , plan = result)
     except GeminiUnavailableError:
@@ -34,6 +36,10 @@ async def regenerate_day(id: str, request: RegenerateDayRequest) ->MealPlan:
     if id not in meal_plans:
         raise HTTPException(status_code=404, detail="Plan not found")
     meal = meal_plans[id]
+    original_start = meal_plans[id].start_date
+    if original_start:
+        day_date = original_start + timedelta(days=request.day - 1)
+        request.preferences.start_date = day_date
     request.preferences.days = 1
     try:
         result = await generate_meal_plan(request.preferences)

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import date     
 
 
 class Meal(BaseModel):
@@ -17,6 +18,7 @@ class DayPlan(BaseModel):
 
 class MealPlan(BaseModel):
     num_days:int
+    start_date: Optional[date] = None
     plan:list[DayPlan]
 
 class PreferenceRequest(BaseModel):
@@ -26,6 +28,8 @@ class PreferenceRequest(BaseModel):
         days: int
         calories_per_day:Optional[int] = 2300
         diet:Optional[str] = None
+        start_date: Optional[date] = None
+        
 class RegenerateDayRequest(BaseModel):
      day:int
      preferences: PreferenceRequest
