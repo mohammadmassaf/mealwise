@@ -21,5 +21,10 @@ async def plan_meals(request: PreferenceRequest):
         raise HTTPException(status_code=503, detail="Gemini service is currently unavailable")
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
-    
+
+@router.get("/meal-plan/{id}")
+async def get_meal_plan(id:str)-> MealPlan:
+    try:
+        return meal_plans[id]
+    except KeyError:
+        raise HTTPException(status_code=404,detail=  "id not found")
