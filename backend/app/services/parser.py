@@ -23,19 +23,12 @@ def parse_llm_response(raw:str) -> dict:
 
 
 
-def validate_meal_plan(data: dict, days: int = 7) -> bool:
+def validate_num_days(data: dict, days: int = 7) -> bool:
     if 'week' not in data:
         raise ValueError(f"data should include a key called week, received: {data}")
     if len(data["week"]) != days:
         raise ValueError(f"expected {days} days, received: {len(data['week'])}")
-    for day in data["week"]:
-        if "day" not in day:
-            raise ValueError(f"day field missing in: {day}")
-        if "meals" not in day:
-            raise ValueError(f"meals field missing in: {day}")
-        for meal in ["breakfast", "lunch", "dinner", "snack"]:
-            if meal not in day["meals"]:
-                raise ValueError(f"{meal} missing in: {day['meals']}")
+    
     return True
 
 def call_with_retry(func,max_retries = 3, days: int = 7):
@@ -43,7 +36,7 @@ def call_with_retry(func,max_retries = 3, days: int = 7):
         try:
             result = func()
             parsed_result = parse_llm_response(result)
-            validate_meal_plan(parsed_result, days=days)
+            validate_num_days(parsed_result, days=days)
             return parsed_result
         except Exception as e:
             if attempt < max_retries - 1:
