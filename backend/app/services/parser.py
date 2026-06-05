@@ -2,6 +2,8 @@ import json
 import requests
 import time 
 from app.models.meal import MealPlan,Meal,DayPlan
+from google.genai import errors
+from app.exceptions import GeminiUnavailableError
 
 def parse_llm_response(raw:str) -> dict:
     """
@@ -42,6 +44,8 @@ def call_with_retry(func,max_retries = 3, days: int = 7):
             if attempt < max_retries - 1:
                 time.sleep(2 ** attempt)
                 continue
+            if isinstance(e, errors.APIError) and e.code == 503:
+                raise GeminiUnavailableError("Gemini service is unavailable")
             raise RuntimeError(f"Max retries reached: {e}")
         
 

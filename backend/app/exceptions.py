@@ -1,0 +1,2 @@
+class GeminiUnavailableError(Exception):
+    pass
