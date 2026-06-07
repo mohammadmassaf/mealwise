@@ -1,9 +1,11 @@
 import uuid 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException , Depends
 from app.models.meal import MealPlan, PreferenceRequest, RegenerateDayRequest,PlanResponse
 from app.services.planner import generate_meal_plan
 from app.exceptions import GeminiUnavailableError
 from datetime import timedelta
+from app.core.database import get_db
+from sqlalchemy.orm import Session
 
 
 router = APIRouter(prefix="/meals", tags=["meals"])
@@ -12,7 +14,7 @@ router = APIRouter(prefix="/meals", tags=["meals"])
 meal_plans: dict[str, MealPlan] = {}
 
 @router.post("/preferences", response_model=PlanResponse)
-async def plan_meals(request: PreferenceRequest):
+async def plan_meals(request: PreferenceRequest, db:Session = Depends(get_db)):
     try:
         result =await  generate_meal_plan(request)
         plan_id = str(uuid.uuid4()) 
@@ -30,7 +32,7 @@ async def get_meal_plan(id:str)-> MealPlan:
         raise HTTPException(status_code=404,detail=  "id not found")
     
 @router.post("/meal-plan/{id}/regenerate-day")
-async def regenerate_day(id: str, request: RegenerateDayRequest) ->MealPlan:
+async def regenerate_day(id: str, request: RegenerateDayRequest, db:Session = Depends(get_db)) ->MealPlan:
     if id not in meal_plans:
         raise HTTPException(status_code=404, detail="Plan not found")
     meal = meal_plans[id]

@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     model_config = ConfigDict(env_file=str(Path(__file__).resolve().parent.parent.parent.parent / ".env"))
     
     google_api_key: str
+    DATABASE_URL : str
 
 settings = Settings()
 
