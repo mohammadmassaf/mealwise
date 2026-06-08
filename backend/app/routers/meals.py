@@ -1,8 +1,7 @@
-import uuid 
+
 from fastapi import APIRouter, HTTPException , Depends
 from app.models.meal import MealPlan, PreferenceRequest, RegenerateDayRequest,PlanResponse
 from app.services.planner import generate_meal_plan
-from app.exceptions import GeminiUnavailableError
 from datetime import timedelta
 from app.core.database import get_db
 from sqlalchemy.orm import Session
@@ -16,11 +15,10 @@ meal_plans: dict[str, MealPlan] = {}
 @router.post("/preferences", response_model=PlanResponse)
 async def plan_meals(request: PreferenceRequest, db:Session = Depends(get_db)):
     try:
-        result =await  generate_meal_plan(request)
-        plan_id = str(uuid.uuid4()) 
-        result.start_date = request.start_date
-        meal_plans[plan_id] =result
-        return PlanResponse(id = plan_id , plan = result)
+        pydantic_plan, db_plan=await  generate_meal_plan(request,db)
+        pydantic_plan.start_date = request.start_date
+    
+        return PlanResponse(id = str(db_plan.plan_id) , plan = pydantic_plan)
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
 

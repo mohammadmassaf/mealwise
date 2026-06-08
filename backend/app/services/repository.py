@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
 from app.models.meal import MealPlan
 from app.models.db_models import Users, MealPlan as MealPlanDB, DayPlan as DayPlanDB, Meal as MealDB, Ingredients as IngredientsDB
+from datetime import date
 
-
-def save_meal_plan(db: Session, meal_plan_data: MealPlan) -> MealPlan:
-     meal_plan = MealPlanDB(num_days=meal_plan_data.num_days, start_date=meal_plan_data.start_date, user_id=None)
-
+def save_meal_plan(db: Session, meal_plan_data: MealPlan ) -> MealPlanDB:
+     start = meal_plan_data.start_date or date.today()
+     meal_plan = MealPlanDB(num_days=meal_plan_data.num_days, start_date=start, user_id=None)
 
      for plan in meal_plan_data.plan:
           day_plan = DayPlanDB(day = plan.day )

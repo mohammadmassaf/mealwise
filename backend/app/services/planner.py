@@ -3,8 +3,11 @@ from app.services.prompts import build_meal_plan_prompt
 from app.core.config import get_client
 from . import parser
 from app.models.meal import  PreferenceRequest,MealPlan
+from app.services.repository import save_meal_plan
+from sqlalchemy.orm import Session
+ 
 
-async def generate_meal_plan(request: PreferenceRequest) -> MealPlan:
+async def generate_meal_plan(request: PreferenceRequest,db:Session ) -> MealPlan:
     system_prompt, user_prompt = build_meal_plan_prompt(request)
     client = get_client()
 
@@ -15,6 +18,7 @@ async def generate_meal_plan(request: PreferenceRequest) -> MealPlan:
         contents=full_prompt
     ).text
     result = await asyncio.to_thread(parser.call_with_retry, fetcher, days=request.days) 
-    return parser.dict_to_meal_plan(result)
+    meal_plan = parser.dict_to_meal_plan(result)
+    return meal_plan,save_meal_plan(db,meal_plan)
 
     
