@@ -1,7 +1,7 @@
 import json
 import requests
 import time 
-from app.models.meal import MealPlan,Meal,DayPlan
+from app.models.meal import MealPlan,Meal,DayPlan,IngredientSchema
 from google.genai import errors
 from app.exceptions import GeminiUnavailableError
 
@@ -48,13 +48,17 @@ def call_with_retry(func,max_retries = 3, days: int = 7):
                 raise GeminiUnavailableError("Gemini service is unavailable")
             raise RuntimeError(f"Max retries reached: {e}")
         
-
-def dict_to_meal_plan(data:dict) -> MealPlan:
-        days = []
-        for week in data["week"]:
-            meals = []
-            for  meal  in week["meals"].values():
-                meals.append(Meal(name=meal["name"], ingredients=meal["ingredients"],
-                                   calories=meal["calories"], time_to_cook=meal["time_to_cook"], recipe= meal["recipe"]))
-            days.append(DayPlan(day=week["day"], meals = meals))
-        return MealPlan(num_days = len(data["week"]) , plan = days)
+def dict_to_meal_plan(data: dict) -> MealPlan:
+    days = []
+    for week in data["week"]:
+        meals = []
+        for meal in week["meals"].values():
+            meals.append(Meal(
+                name=meal["name"],
+                ing=[IngredientSchema(name=i) for i in meal["ingredients"]],
+                calories=meal["calories"],
+                time_to_cook=meal["time_to_cook"],
+                recipe=meal["recipe"]
+            ))
+        days.append(DayPlan(day=week["day"], meals=meals))
+    return MealPlan(num_days=len(data["week"]), days=days)

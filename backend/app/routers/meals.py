@@ -5,6 +5,7 @@ from app.services.planner import generate_meal_plan
 from datetime import timedelta
 from app.core.database import get_db
 from sqlalchemy.orm import Session
+from app.services.repository import get_plan
 
 
 router = APIRouter(prefix="/meals", tags=["meals"])
@@ -22,12 +23,12 @@ async def plan_meals(request: PreferenceRequest, db:Session = Depends(get_db)):
     except RuntimeError as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/meal-plan/{id}")
-async def get_meal_plan(id:str)-> MealPlan:
-    try:
-        return meal_plans[id]
-    except KeyError:
-        raise HTTPException(status_code=404,detail=  "id not found")
+@router.get("/meal-plan/{id}", response_model = MealPlan)
+async def get_meal_plan(id:int ,db: Session = Depends(get_db)):
+    plan = get_plan(db, id)
+    if plan is None:
+        raise HTTPException(status_code=404, detail="id not found")
+    return plan
     
 @router.post("/meal-plan/{id}/regenerate-day")
 async def regenerate_day(id: str, request: RegenerateDayRequest, db:Session = Depends(get_db)) ->MealPlan:

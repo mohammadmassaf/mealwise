@@ -1,25 +1,30 @@
-from pydantic import BaseModel
+from pydantic import BaseModel , ConfigDict
 from typing import Optional
 from datetime import date     
 
-
+class IngredientSchema(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    name: str
 class Meal(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     name: str   
-    ingredients: list[str] 
+    ing: list[IngredientSchema] 
     calories: int
     time_to_cook: Optional[int]  
     recipe: Optional[str] = None
     pass
 
 class DayPlan(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     day:str
     meals:list[Meal]
     pass
 
 class MealPlan(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
     num_days:int
     start_date: Optional[date] = None
-    plan:list[DayPlan]
+    days:list[DayPlan]
 
 class PreferenceRequest(BaseModel):
         prep_time: Optional[int] = 45

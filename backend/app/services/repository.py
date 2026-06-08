@@ -20,3 +20,6 @@ def save_meal_plan(db: Session, meal_plan_data: MealPlan ) -> MealPlanDB:
      db.commit()
      db.refresh(meal_plan)
      return meal_plan
+def get_plan(db: Session , plan_id : int) -> MealPlanDB:
+     plan = db.get(MealPlanDB , plan_id)
+     return plan
