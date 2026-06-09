@@ -6,8 +6,10 @@ from app.models.meal import RegisterRequest , LoginRequest
 from app.models.db_models import Users 
 from pwdlib import PasswordHash
 import jwt
+from fastapi.security import OAuth2PasswordBearer
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 @router.post("/register")
 async def register(request: RegisterRequest ,db: Session = Depends(get_db)):
@@ -43,4 +45,16 @@ async def login(request: LoginRequest , db: Session = Depends(get_db)):
     # 4. Generate and return JWT token
     token = jwt.encode({"sub": str(existing.user_id)}, settings.secret_key, algorithm="HS256")
     return {"access_token": token}
+
+
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Users:
+    try:
+        payload = jwt.decode(token, settings.secret_key, algorithms=["HS256"])
+    except jwt.InvalidTokenError :
+        raise HTTPException(status_code=401, detail="Invalid token") 
+    user = db.get(Users , int(payload["sub"]))
+    if not user:
+        raise HTTPException(status_code=401, detail="user not found")
+    return user
     

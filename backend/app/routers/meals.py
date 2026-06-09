@@ -6,17 +6,18 @@ from datetime import timedelta
 from app.core.database import get_db
 from sqlalchemy.orm import Session
 from app.services.repository import get_plan,build_day_plan
-
+from app.models.db_models import Users
+from app.routers.auth import get_current_user  
 
 router = APIRouter(prefix="/meals", tags=["meals"])
 
 
 meal_plans: dict[str, MealPlan] = {}
 
-@router.post("/preferences", response_model=PlanResponse)
-async def plan_meals(request: PreferenceRequest, db:Session = Depends(get_db)):
+@router.post("/preferences")
+async def plan_meals(request: PreferenceRequest, current_user: Users = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
-        pydantic_plan, db_plan=await  generate_meal_plan(request,db)
+        pydantic_plan, db_plan=await  generate_meal_plan(request,db , current_user.user_id  )
         pydantic_plan.start_date = request.start_date
     
         return PlanResponse(id = str(db_plan.plan_id) , plan = pydantic_plan)

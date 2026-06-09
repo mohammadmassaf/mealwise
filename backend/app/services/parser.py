@@ -55,7 +55,7 @@ def dict_to_meal_plan(data: dict) -> MealPlan:
         for meal in week["meals"].values():
             meals.append(Meal(
                 name=meal["name"],
-                ing=[IngredientSchema(name=i) for i in meal["ingredients"]],
+                ing=[IngredientSchema(name=i["item"] if isinstance(i, dict) else i) for i in meal["ingredients"]],
                 calories=meal["calories"],
                 time_to_cook=meal["time_to_cook"],
                 recipe=meal["recipe"]

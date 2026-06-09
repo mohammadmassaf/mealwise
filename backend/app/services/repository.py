@@ -3,9 +3,9 @@ from app.models.meal import MealPlan
 from app.models.db_models import Users, MealPlan as MealPlanDB, DayPlan as DayPlanDB, Meal as MealDB, Ingredients as IngredientsDB
 from datetime import date
 
-def save_meal_plan(db: Session, meal_plan_data: MealPlan ) -> MealPlanDB:
+def save_meal_plan(db: Session, meal_plan_data: MealPlan,user_id: int) -> MealPlanDB:
      start = meal_plan_data.start_date or date.today()
-     meal_plan = MealPlanDB(num_days=meal_plan_data.num_days, start_date=start, user_id=None)
+     meal_plan = MealPlanDB(num_days=meal_plan_data.num_days, start_date=start, user_id=user_id)
 
      for plan in meal_plan_data.days:
           day_plan = DayPlanDB(day = plan.day )
