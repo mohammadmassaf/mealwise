@@ -1,11 +1,13 @@
 from fastapi import FastAPI,Request
 from fastapi.responses import JSONResponse
-from app.routers import meals
+from app.routers import meals ,auth
 from app.exceptions import GeminiUnavailableError
+
 
 app = FastAPI(title="Mealwise API")
 
 app.include_router(meals.router)
+app.include_router(auth.router)
 
 @app.get("/health")
 async def health():

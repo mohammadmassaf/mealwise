@@ -6,7 +6,7 @@ Base = declarative_base()
 class Users(Base):
     __tablename__ = "users"
     user_id = Column(Integer , primary_key = True)
-    username = Column(String, nullable=False)
+    username = Column(String, nullable=True)
     email = Column(String, nullable=False)
     password = Column(String,nullable = False)
 class MealPlan(Base):

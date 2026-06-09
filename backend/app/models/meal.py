@@ -45,3 +45,10 @@ class PlanResponse(BaseModel):
 class ErrorResponse(BaseModel):
      message:str
      status_code: int 
+class RegisterRequest(BaseModel):
+     username: Optional[str] = None
+     email: str
+     password: str
+class LoginRequest(BaseModel):
+    email: str
+    password: str
