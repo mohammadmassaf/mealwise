@@ -33,6 +33,7 @@ def build_meal_plan_prompt(request:PreferenceRequest,past_meals:list[str]) -> tu
               }}
             ]
           }}
+          {"avoid repeating these meals: " + str(past_meals) if past_meals else ""}
     """
     user_prompt = f"""Create a personalized {preferences.get("days")}-day meal plan based on my profile:
         - Start date: {preferences.get("start_date", "Monday")}
