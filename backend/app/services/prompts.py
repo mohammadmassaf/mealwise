@@ -1,7 +1,7 @@
 from app.models.meal import  PreferenceRequest
 
 
-def build_meal_plan_prompt(request:PreferenceRequest) -> tuple:
+def build_meal_plan_prompt(request:PreferenceRequest,past_meals:list[str]) -> tuple:
 
 
     preferences = request.model_dump(exclude_none=True)

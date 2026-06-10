@@ -6,10 +6,12 @@ from app.models.meal import  PreferenceRequest,MealPlan
 from app.services.repository import save_meal_plan
 from sqlalchemy.orm import Session
 from app.models.db_models import Users
+from app.services.repository import get_recent_user_plans
  
 
 async def generate_meal_plan(request: PreferenceRequest,db:Session ,user_id : int) -> MealPlan:
-    system_prompt, user_prompt = build_meal_plan_prompt(request)
+    meal_names =get_recent_user_plans(db,user_id)
+    system_prompt, user_prompt = build_meal_plan_prompt(request,meal_names)
     client = get_client()
 
     full_prompt = f"{system_prompt}\n\n{user_prompt}"

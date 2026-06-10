@@ -1,7 +1,9 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 from app.models.meal import MealPlan
 from app.models.db_models import Users, MealPlan as MealPlanDB, DayPlan as DayPlanDB, Meal as MealDB, Ingredients as IngredientsDB
 from datetime import date
+from fastapi import HTTPException
 
 def save_meal_plan(db: Session, meal_plan_data: MealPlan,user_id: int) -> MealPlanDB:
      start = meal_plan_data.start_date or date.today()
@@ -34,3 +36,16 @@ def  build_day_plan(day_data):
                     meal.ing.append(ingredient)
           day_plan.meals.append(meal)
      return day_plan
+
+def get_recent_user_plans(db:Session , user_id:int)-> list[str]:
+     stmt = select(MealPlanDB).where(MealPlanDB.user_id == user_id).order_by(MealPlanDB.start_date.desc()).limit(1)
+     result = db.execute(stmt).scalar_one_or_none()
+     if not result:
+          return []
+     meal_names = []
+     for day in result.days:
+          for meal in day.meals:
+               meal_names.append(meal.name)
+     
+     return meal_names
+
