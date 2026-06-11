@@ -41,6 +41,7 @@ def call_with_retry(func,max_retries = 3, days: int = 7):
             validate_num_days(parsed_result, days=days)
             return parsed_result
         except Exception as e:
+            print(e)
             if attempt < max_retries - 1:
                 time.sleep(2 ** attempt)
                 continue
