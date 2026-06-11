@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     google_api_key: str
     DATABASE_URL : str
     secret_key: str
+    usda_key : str
 
 settings = Settings()
 
