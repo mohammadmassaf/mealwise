@@ -1,5 +1,5 @@
 import pytest
-from mealwise.backend.app.services import parser
+from app.services import parser
 
 def make_valid_plan():
     days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]

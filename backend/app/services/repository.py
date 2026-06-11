@@ -45,7 +45,7 @@ def get_recent_user_plans(db:Session , user_id:int)-> list[str]:
      meal_names = []
      for day in result.days:
           for meal in day.meals:
-               meal_names.append(meal.name)
+               meal_names     .append(meal.name)
      
      return meal_names
 
