@@ -1,10 +1,18 @@
-from fastapi import FastAPI,Request
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from app.routers import meals ,auth
+from fastapi.middleware.cors import CORSMiddleware
+from app.routers import meals, auth
 from app.exceptions import GeminiUnavailableError
 
-
 app = FastAPI(title="Mealwise API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(meals.router)
 app.include_router(auth.router)
