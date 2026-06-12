@@ -1,14 +1,20 @@
 from fastapi import APIRouter, HTTPException, Depends
-from app.models.meal import MealPlan, PreferenceRequest, RegenerateDayRequest, PlanResponse
+from app.models.meal import MealPlan, PreferenceRequest, RegenerateDayRequest, PlanResponse, PlanSummary
 from app.services.planner import generate_meal_plan
 from datetime import timedelta
 from app.core.database import get_db
 from sqlalchemy.orm import Session
-from app.services.repository import get_plan, build_day_plan
+from app.services.repository import get_plan, build_day_plan, get_user_plans
 from app.models.db_models import Users, DayPlan as DayPlanDB
 from app.routers.auth import get_current_user
 
 router = APIRouter(prefix="/meals", tags=["meals"])
+
+
+@router.get("/my-plans", response_model=list[PlanSummary])
+async def list_my_plans(current_user: Users = Depends(get_current_user), db: Session = Depends(get_db)):
+    plans = get_user_plans(db, current_user.user_id)
+    return [PlanSummary(id=p.plan_id, num_days=p.num_days, start_date=p.start_date) for p in plans]
 
 
 @router.post("/preferences")

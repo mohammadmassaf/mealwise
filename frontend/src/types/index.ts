@@ -26,6 +26,12 @@ export interface PlanResponse {
   plan: MealPlan;
 }
 
+export interface PlanSummary {
+  id: number;
+  num_days: number;
+  start_date: string | null;
+}
+
 export interface PreferenceRequest {
   days: number;
   prep_time?: number;
@@ -34,4 +40,5 @@ export interface PreferenceRequest {
   diet?: string;
   calories_per_day?: number;
   start_date?: string;
+  notes?: string;
 }

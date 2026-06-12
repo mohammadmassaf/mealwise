@@ -34,6 +34,11 @@ def get_plan(db: Session, plan_id: int) -> MealPlanDB:
     return db.get(MealPlanDB, plan_id)
 
 
+def get_user_plans(db: Session, user_id: int) -> list[MealPlanDB]:
+    stmt = select(MealPlanDB).where(MealPlanDB.user_id == user_id).order_by(MealPlanDB.start_date.desc())
+    return list(db.execute(stmt).scalars().all())
+
+
 def get_recent_user_plans(db: Session, user_id: int) -> list[str]:
     stmt = select(MealPlanDB).where(MealPlanDB.user_id == user_id).order_by(MealPlanDB.start_date.desc()).limit(1)
     result = db.execute(stmt).scalar_one_or_none()

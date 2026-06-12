@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Salad, LogOut } from "lucide-react";
+import { Salad, LogOut, CalendarDays } from "lucide-react";
 
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth();
@@ -20,6 +20,9 @@ export default function Navbar() {
       <div className="navbar-actions">
         {isAuthenticated ? (
           <>
+            <Link to="/my-plans" className="btn btn-ghost">
+              <CalendarDays size={16} /> My Plans
+            </Link>
             <Link to="/planner" className="btn btn-outline">New Plan</Link>
             <button onClick={handleLogout} className="btn btn-ghost" title="Logout">
               <LogOut size={18} />

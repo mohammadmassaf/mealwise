@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import PlannerPage from "./pages/PlannerPage";
 import MealPlanPage from "./pages/MealPlanPage";
+import MyPlansPage from "./pages/MyPlansPage";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,10 @@ export default function App() {
               <Route
                 path="/plan/:id"
                 element={<ProtectedRoute><MealPlanPage /></ProtectedRoute>}
+              />
+              <Route
+                path="/my-plans"
+                element={<ProtectedRoute><MyPlansPage /></ProtectedRoute>}
               />
             </Routes>
           </main>

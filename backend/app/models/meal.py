@@ -34,6 +34,7 @@ class PreferenceRequest(BaseModel):
         calories_per_day:Optional[int] = 2300
         diet:Optional[str] = None
         start_date: Optional[date] = None
+        notes: Optional[str] = None
         
 class RegenerateDayRequest(BaseModel):
      day:int
@@ -42,6 +43,11 @@ class RegenerateDayRequest(BaseModel):
 class PlanResponse(BaseModel):
         id: str
         plan: MealPlan
+
+class PlanSummary(BaseModel):
+        id: int
+        num_days: int
+        start_date: Optional[date] = None
 class ErrorResponse(BaseModel):
      message:str
      status_code: int 

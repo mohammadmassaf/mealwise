@@ -239,6 +239,21 @@ a:hover { text-decoration: underline; }
 .range-row input[type="range"] { flex: 1; accent-color: var(--orange); }
 .range-value { font-size: .85rem; font-weight: 700; color: var(--orange); min-width: 68px; }
 
+.notes-input {
+  padding: .65rem .9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: .95rem;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--white);
+  resize: vertical;
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+}
+.notes-input:focus { border-color: var(--green-light); }
+
 .cuisine-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
 .chip {
   padding: .4rem 1rem;
@@ -364,6 +379,57 @@ a:hover { text-decoration: underline; }
   min-height: calc(100svh - 64px);
   color: var(--text-muted);
 }
+
+/* ── My Plans page ── */
+.myplans-page { max-width: 640px; margin: 0 auto; padding: 3rem 1.5rem; }
+.myplans-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.myplans-header h1 { font-size: 1.8rem; }
+
+.myplans-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+.myplans-empty svg { color: var(--border); }
+.myplans-empty h2 { font-size: 1.3rem; color: var(--text); }
+.myplans-empty p { font-size: .95rem; margin-bottom: .5rem; }
+
+.myplans-list { display: flex; flex-direction: column; gap: .75rem; }
+.plan-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: border-color .15s, box-shadow .15s;
+}
+.plan-row:hover { border-color: var(--green-light); box-shadow: var(--shadow-sm); }
+.plan-row-icon {
+  background: var(--green-bg);
+  color: var(--green);
+  border-radius: 8px;
+  padding: .6rem;
+  display: flex;
+  flex-shrink: 0;
+}
+.plan-row-info { flex: 1; display: flex; flex-direction: column; gap: .2rem; }
+.plan-row-title { font-weight: 700; font-size: .95rem; color: var(--text); }
+.plan-row-date { font-size: .82rem; color: var(--text-muted); }
+.plan-row-arrow { color: var(--text-muted); flex-shrink: 0; }
 
 /* ── Form error ── */
 .form-error {

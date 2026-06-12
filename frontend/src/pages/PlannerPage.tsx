@@ -18,6 +18,7 @@ export default function PlannerPage() {
   const [allergies, setAllergies] = useState("");
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
   const [startDate, setStartDate] = useState("");
+  const [notes, setNotes] = useState("");
 
   function toggleCuisine(c: string) {
     setSelectedCuisines((prev) =>
@@ -37,6 +38,7 @@ export default function PlannerPage() {
       allergies: allergies ? allergies.split(",").map((s) => s.trim()) : undefined,
       cuisines: selectedCuisines.length ? selectedCuisines : undefined,
       start_date: startDate || undefined,
+      notes: notes.trim() || undefined,
     };
     try {
       const result = await createMealPlan(prefs);
@@ -102,6 +104,19 @@ export default function PlannerPage() {
               onChange={(e) => setAllergies(e.target.value)}
             />
           </div>
+        </div>
+
+        <div className="form-group">
+          <label>
+            Special notes <span className="optional">(optional)</span>
+          </label>
+          <textarea
+            className="notes-input"
+            rows={3}
+            placeholder="e.g. I prefer high-protein breakfasts, avoid spicy food at dinner, use seasonal vegetables…"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
         </div>
 
         <div className="form-group">

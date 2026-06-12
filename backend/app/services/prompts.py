@@ -37,13 +37,15 @@ def build_meal_plan_prompt(request:PreferenceRequest,past_meals:list[str]) -> tu
           You must use the get_nutrition_data tool to look up calorie data for each meal's 
           ingredients before reporting calorie counts
     """
+    notes = preferences.get("notes")
     user_prompt = f"""Create a personalized {preferences.get("days")}-day meal plan based on my profile:
         - Start date: {preferences.get("start_date", "Monday")}
         - Diet type: {preferences.get("diet" , "none")}
         - Allergies: {preferences.get("allergies","none")}
         - Daily calorie target: {preferences.get("calories_per_day" , "2300")}
         - Preferred cuisines: {preferences.get("cuisines","none")}
-        -preperation time : {preferences.get("prep_time", "45")}
+        - Preparation time: {preferences.get("prep_time", "45")}
+        {"- Special instructions: " + notes if notes else ""}
 
         """
     return system_prompt, user_prompt
