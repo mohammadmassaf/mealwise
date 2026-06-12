@@ -34,6 +34,8 @@ def build_meal_plan_prompt(request:PreferenceRequest,past_meals:list[str]) -> tu
             ]
           }}
           {"avoid repeating these meals: " + str(past_meals) if past_meals else ""}
+          You must use the get_nutrition_data tool to look up calorie data for each meal's 
+          ingredients before reporting calorie counts
     """
     user_prompt = f"""Create a personalized {preferences.get("days")}-day meal plan based on my profile:
         - Start date: {preferences.get("start_date", "Monday")}
