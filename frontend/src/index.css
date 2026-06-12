@@ -285,13 +285,16 @@ a:hover { text-decoration: underline; }
 .plan-date { color: var(--text-muted); margin-top: .3rem; font-size: .95rem; }
 
 .days-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.25rem;
 }
 
 /* ── Day column ── */
 .day-column {
+  flex: 0 1 300px;
+  min-width: 260px;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);

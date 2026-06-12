@@ -1,9 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from app.models.meal import MealPlan
-from app.models.db_models import Users, MealPlan as MealPlanDB, DayPlan as DayPlanDB, Meal as MealDB, Ingredients as IngredientsDB
+from app.models.db_models import MealPlan as MealPlanDB, DayPlan as DayPlanDB, Meal as MealDB, Ingredients as IngredientsDB
 from datetime import date
-from fastapi import HTTPException
 
 def _build_meal(meal_data) -> MealDB:
     meal = MealDB(name=meal_data.name, calories=meal_data.calories, time_to_cook=meal_data.time_to_cook, recipe=meal_data.recipe)

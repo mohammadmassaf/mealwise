@@ -4,12 +4,16 @@ from google import genai
 from pathlib import Path
 
 class Settings(BaseSettings):
-    model_config = ConfigDict(env_file=str(Path(__file__).resolve().parent.parent.parent.parent / ".env"))
-    
+    model_config = ConfigDict(
+        env_file=str(Path(__file__).resolve().parent.parent.parent.parent / ".env"),
+        env_file_encoding="utf-8",
+    )
+
     google_api_key: str
-    DATABASE_URL : str
+    DATABASE_URL: str
     secret_key: str
-    usda_key : str
+    usda_key: str
+    cors_origins: str = "http://localhost:5173"
 
 settings = Settings()
 

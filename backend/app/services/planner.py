@@ -4,9 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.config import get_client
 from . import parser
 from app.models.meal import  PreferenceRequest,MealPlan
-from app.services.repository import save_meal_plan
-from app.models.db_models import Users
-from app.services.repository import get_recent_user_plans
+from app.services.repository import save_meal_plan, get_recent_user_plans
 from app.services.nutrition_service import get_nutrition_data
 from app.services.prompts import build_meal_plan_prompt
 

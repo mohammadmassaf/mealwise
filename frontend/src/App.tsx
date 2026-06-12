@@ -9,6 +9,7 @@ import RegisterPage from "./pages/RegisterPage";
 import PlannerPage from "./pages/PlannerPage";
 import MealPlanPage from "./pages/MealPlanPage";
 import MyPlansPage from "./pages/MyPlansPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ export default function App() {
                 path="/my-plans"
                 element={<ProtectedRoute><MyPlansPage /></ProtectedRoute>}
               />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
         </BrowserRouter>
