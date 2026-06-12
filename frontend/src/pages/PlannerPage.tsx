@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createMealPlan } from "../api/meals";
 import type { PreferenceRequest } from "../types";
@@ -25,15 +25,6 @@ export default function PlannerPage() {
       setCuisines((prev) => [...prev, trimmed]);
     }
     setCuisineInput("");
-  }
-
-  function handleCuisineKey(e: KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" || e.key === ",") {
-      e.preventDefault();
-      addCuisine(cuisineInput);
-    } else if (e.key === "Backspace" && cuisineInput === "" && cuisines.length > 0) {
-      setCuisines((prev) => prev.slice(0, -1));
-    }
   }
 
   function removeCuisine(cuisine: string) {
@@ -140,7 +131,14 @@ export default function PlannerPage() {
               placeholder={cuisines.length === 0 ? "e.g. Italian, Thai, Mexican…" : ""}
               value={cuisineInput}
               onChange={(e) => setCuisineInput(e.target.value)}
-              onKeyDown={handleCuisineKey}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === ",") {
+                  e.preventDefault();
+                  addCuisine(cuisineInput);
+                } else if (e.key === "Backspace" && cuisineInput === "" && cuisines.length > 0) {
+                  setCuisines((prev) => prev.slice(0, -1));
+                }
+              }}
               onBlur={() => addCuisine(cuisineInput)}
             />
           </div>
