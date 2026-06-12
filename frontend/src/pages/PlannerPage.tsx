@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { createMealPlan } from "../api/meals";
 import type { PreferenceRequest } from "../types";
-
-const DIET_OPTIONS = ["None", "Vegetarian", "Vegan", "Keto", "Paleo", "Mediterranean"];
-const CUISINE_OPTIONS = ["Italian", "Asian", "Mexican", "Mediterranean", "American", "Indian", "Middle Eastern"];
+import { X } from "lucide-react";
 
 export default function PlannerPage() {
   const navigate = useNavigate();
@@ -14,16 +12,32 @@ export default function PlannerPage() {
   const [days, setDays] = useState(7);
   const [prepTime, setPrepTime] = useState(45);
   const [calories, setCalories] = useState(2300);
-  const [diet, setDiet] = useState("None");
+  const [diet, setDiet] = useState("");
   const [allergies, setAllergies] = useState("");
-  const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
+  const [cuisines, setCuisines] = useState<string[]>([]);
+  const [cuisineInput, setCuisineInput] = useState("");
   const [startDate, setStartDate] = useState("");
   const [notes, setNotes] = useState("");
 
-  function toggleCuisine(c: string) {
-    setSelectedCuisines((prev) =>
-      prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]
-    );
+  function addCuisine(value: string) {
+    const trimmed = value.trim();
+    if (trimmed && !cuisines.includes(trimmed)) {
+      setCuisines((prev) => [...prev, trimmed]);
+    }
+    setCuisineInput("");
+  }
+
+  function handleCuisineKey(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addCuisine(cuisineInput);
+    } else if (e.key === "Backspace" && cuisineInput === "" && cuisines.length > 0) {
+      setCuisines((prev) => prev.slice(0, -1));
+    }
+  }
+
+  function removeCuisine(cuisine: string) {
+    setCuisines((prev) => prev.filter((c) => c !== cuisine));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -34,9 +48,9 @@ export default function PlannerPage() {
       days,
       prep_time: prepTime,
       calories_per_day: calories,
-      diet: diet === "None" ? undefined : diet,
+      diet: diet.trim() || undefined,
       allergies: allergies ? allergies.split(",").map((s) => s.trim()) : undefined,
-      cuisines: selectedCuisines.length ? selectedCuisines : undefined,
+      cuisines: cuisines.length ? cuisines : undefined,
       start_date: startDate || undefined,
       notes: notes.trim() || undefined,
     };
@@ -89,10 +103,13 @@ export default function PlannerPage() {
           </div>
 
           <div className="form-group">
-            <label>Diet type</label>
-            <select value={diet} onChange={(e) => setDiet(e.target.value)}>
-              {DIET_OPTIONS.map((d) => <option key={d}>{d}</option>)}
-            </select>
+            <label>Diet type <span className="optional">(optional)</span></label>
+            <input
+              type="text"
+              placeholder="e.g. Vegan, Keto, Mediterranean…"
+              value={diet}
+              onChange={(e) => setDiet(e.target.value)}
+            />
           </div>
 
           <div className="form-group">
@@ -102,6 +119,29 @@ export default function PlannerPage() {
               placeholder="e.g. peanuts, shellfish"
               value={allergies}
               onChange={(e) => setAllergies(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Preferred cuisines <span className="optional">(type and press Enter)</span></label>
+          <div className="tag-input">
+            {cuisines.map((c) => (
+              <span key={c} className="tag">
+                {c}
+                <button type="button" className="tag-remove" onClick={() => removeCuisine(c)}>
+                  <X size={12} />
+                </button>
+              </span>
+            ))}
+            <input
+              type="text"
+              className="tag-text-input"
+              placeholder={cuisines.length === 0 ? "e.g. Italian, Thai, Mexican…" : ""}
+              value={cuisineInput}
+              onChange={(e) => setCuisineInput(e.target.value)}
+              onKeyDown={handleCuisineKey}
+              onBlur={() => addCuisine(cuisineInput)}
             />
           </div>
         </div>
@@ -117,22 +157,6 @@ export default function PlannerPage() {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
-        </div>
-
-        <div className="form-group">
-          <label>Preferred cuisines</label>
-          <div className="cuisine-chips">
-            {CUISINE_OPTIONS.map((c) => (
-              <button
-                key={c}
-                type="button"
-                className={`chip ${selectedCuisines.includes(c) ? "chip-active" : ""}`}
-                onClick={() => toggleCuisine(c)}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
         </div>
 
         {error && <p className="form-error">{error}</p>}
