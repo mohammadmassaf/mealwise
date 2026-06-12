@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__visualize__show_widget",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;\" + $env:PATH; cd \"C:\\\\Users\\\\MsiPc\\\\Desktop\\\\projects\\\\mealwise\\\\frontend\"; & \"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\" install react-router-dom axios @tanstack/react-query lucide-react 2>&1)"
+    ]
+  }
+}
