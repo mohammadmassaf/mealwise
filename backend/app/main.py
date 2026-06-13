@@ -4,6 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers import meals, auth
 from app.exceptions import GeminiUnavailableError
 from app.core.config import settings
+from app.core.database import engine
+from app.models.db_models import Base
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Mealwise API")
 
