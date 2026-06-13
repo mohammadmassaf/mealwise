@@ -33,7 +33,7 @@ def validate_num_days(data: dict, days: int = 7) -> bool:
     
     return True
 
-def call_with_retry(func,max_retries = 3, days: int = 7):
+def call_with_retry(func, max_retries=3, days: int = 7):
     for attempt in range(max_retries):
         try:
             result = func()
@@ -41,12 +41,14 @@ def call_with_retry(func,max_retries = 3, days: int = 7):
             validate_num_days(parsed_result, days=days)
             return parsed_result
         except Exception as e:
-            print(e)
+            if isinstance(e, errors.APIError):
+                if e.code == 429:
+                    raise RuntimeError("Gemini rate limit reached. Please wait a minute and try again.")
+                if e.code == 503:
+                    raise GeminiUnavailableError("Gemini service is unavailable")
             if attempt < max_retries - 1:
                 time.sleep(2 ** attempt)
                 continue
-            if isinstance(e, errors.APIError) and e.code == 503:
-                raise GeminiUnavailableError("Gemini service is unavailable")
             raise RuntimeError(f"Max retries reached: {e}")
         
 def dict_to_meal_plan(data: dict) -> MealPlan:

@@ -48,8 +48,9 @@ export default function PlannerPage() {
     try {
       const result = await createMealPlan(prefs);
       navigate(`/plan/${result.id}`);
-    } catch {
-      setError("Failed to generate meal plan. Please try again.");
+    } catch (err: unknown) {
+      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      setError(detail ?? "Failed to generate meal plan. Please try again.");
     } finally {
       setLoading(false);
     }
