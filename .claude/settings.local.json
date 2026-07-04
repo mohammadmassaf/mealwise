@@ -3,7 +3,12 @@
     "allow": [
       "mcp__visualize__show_widget",
       "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;\" + $env:PATH; cd \"C:\\\\Users\\\\MsiPc\\\\Desktop\\\\projects\\\\mealwise\\\\frontend\"; & \"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\" install react-router-dom axios @tanstack/react-query lucide-react 2>&1)",
-      "Bash(mkdir -p \"C:\\\\Users\\\\MsiPc\\\\Desktop\\\\projects\\\\mealwise\\\\frontend\\\\src\\\\\"{api,components,pages,context,types,hooks})"
+      "Bash(mkdir -p \"C:\\\\Users\\\\MsiPc\\\\Desktop\\\\projects\\\\mealwise\\\\frontend\\\\src\\\\\"{api,components,pages,context,types,hooks})",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\MsiPc\\\\.pip\\\\dashboard.html\")",
+      "Bash([ -f \"$HOME/.pip/state.json\" ])",
+      "Read(//c/Users/MsiPc/.pip/**)",
+      "Bash(mkdir -p \"$HOME/.pip\" && echo \"dir ready\")",
+      "Bash(python \"C:/Users/MsiPc/AppData/Roaming/Claude/local-agent-mode-sessions/e2325ff2-7fdc-40c1-a5fd-dcd23453f083/7f91cf1e-0731-4233-a022-90b18213b494/rpm/plugin_01VF1EN4E95TQvKR5RfwYTpn/scripts/render_dashboard.py\" --open)"
     ]
   }
 }
