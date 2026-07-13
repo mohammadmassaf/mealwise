@@ -8,7 +8,10 @@
       "Bash([ -f \"$HOME/.pip/state.json\" ])",
       "Read(//c/Users/MsiPc/.pip/**)",
       "Bash(mkdir -p \"$HOME/.pip\" && echo \"dir ready\")",
-      "Bash(python \"C:/Users/MsiPc/AppData/Roaming/Claude/local-agent-mode-sessions/e2325ff2-7fdc-40c1-a5fd-dcd23453f083/7f91cf1e-0731-4233-a022-90b18213b494/rpm/plugin_01VF1EN4E95TQvKR5RfwYTpn/scripts/render_dashboard.py\" --open)"
+      "Bash(python \"C:/Users/MsiPc/AppData/Roaming/Claude/local-agent-mode-sessions/e2325ff2-7fdc-40c1-a5fd-dcd23453f083/7f91cf1e-0731-4233-a022-90b18213b494/rpm/plugin_01VF1EN4E95TQvKR5RfwYTpn/scripts/render_dashboard.py\" --open)",
+      "Bash(./venv/Scripts/python -c \"import pydantic, groq; print\\('pydantic', pydantic.VERSION\\); print\\('groq ok'\\)\")",
+      "Bash(mv \"C:/Users/MsiPc/Claude/Projects/Hiring-profile/projects/grounded-forge-linkedin-draft.md\" \"C:/Users/MsiPc/Desktop/myvault.obsd/Hiring Profile/projects/groundedForge/grounded-forge-linkedin-draft.md\")",
+      "Read(//c/Users/MsiPc/Desktop/myvault.obsd/Hiring Profile/projects/groundedForge/**)"
     ]
   }
 }
