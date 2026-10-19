@@ -7,7 +7,7 @@ export default function LandingPage() {
       <section className="hero">
         <div className="hero-content">
           <div className="hero-badge">AI-powered meal planning</div>
-          <h1>Eat well, every day — without the effort</h1>
+          <h1>Eat well every day, without the effort</h1>
           <p>
             MealWise generates personalized weekly meal plans based on your diet, allergies,
             and calorie goals. Powered by Gemini AI and real nutrition data.
@@ -33,7 +33,7 @@ export default function LandingPage() {
           <div className="feature-card">
             <BarChart2 size={32} />
             <h3>Real nutrition data</h3>
-            <p>Calorie counts are verified against the USDA food database — not guessed.</p>
+            <p>Calorie counts are verified against the USDA food database, not guessed.</p>
           </div>
           <div className="feature-card">
             <RefreshCw size={32} />

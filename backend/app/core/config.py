@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# Singleton client — initialized once at import time
+# Singleton client - initialized once at import time
 _client = genai.Client(api_key=settings.google_api_key)
 
 def get_client():

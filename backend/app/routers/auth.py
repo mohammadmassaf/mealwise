@@ -12,7 +12,7 @@ from fastapi.security import OAuth2PasswordBearer
 router = APIRouter(prefix="/auth", tags=["auth"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-# Module-level singleton — no need to reconstruct on every request
+# Module-level singleton - no need to reconstruct on every request
 password_hash = PasswordHash.recommended()
 
 TOKEN_EXPIRY_DAYS = 7
