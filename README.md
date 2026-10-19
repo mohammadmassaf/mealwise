@@ -2,12 +2,12 @@
 
 AI-powered meal planner that generates personalized multi-day meal plans with recipes, ingredient lists, and USDA-verified nutrition data.
 
-Built as a learning project to explore FastAPI, LLMs with function calling, and SQLAlchemy — the backend calls Google Gemini to produce structured meal plans, cross-checks calorie counts against the USDA FDC food database, and stores everything in PostgreSQL so you can revisit past plans.
+Built as a learning project to explore FastAPI, LLMs with function calling, and SQLAlchemy. The backend calls Google Gemini to produce structured meal plans, cross-checks calorie counts against the USDA FDC food database, and stores everything in PostgreSQL so you can revisit past plans.
 
 ## Tech stack
 
-**Backend** — FastAPI · SQLAlchemy · PostgreSQL · Google Gemini 2.5 Flash · USDA FDC API · PyJWT  
-**Frontend** — React 19 · TypeScript · Vite · React Router · TanStack Query · Axios
+**Backend**: FastAPI · SQLAlchemy · PostgreSQL · Google Gemini 2.5 Flash · USDA FDC API · PyJWT  
+**Frontend**: React 19 · TypeScript · Vite · React Router · TanStack Query · Axios
 
 ## Getting started
 
@@ -72,7 +72,7 @@ curl -s -X POST http://localhost:8000/auth/register \
   -H "Content-Type: application/json" \
   -d '{"email": "you@example.com", "password": "secret123"}'
 
-# Log in — grab the token
+# Log in and grab the token
 TOKEN=$(curl -s -X POST http://localhost:8000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email": "you@example.com", "password": "secret123"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
@@ -119,8 +119,8 @@ Response (truncated):
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/auth/register` | — | Create account |
-| POST | `/auth/login` | — | Log in, receive JWT |
+| POST | `/auth/register` | no | Create account |
+| POST | `/auth/login` | no | Log in, receive JWT |
 | GET | `/meals/my-plans` | JWT | List all your meal plans |
 | POST | `/meals/preferences` | JWT | Generate a new meal plan |
 | GET | `/meals/meal-plan/{id}` | JWT | Retrieve a saved meal plan |
@@ -128,8 +128,8 @@ Response (truncated):
 
 ## Deployment
 
-- **Backend** — Render (free tier). Uses the `render.yaml` blueprint in this repo.
-- **Frontend** — Vercel. Set `VITE_API_URL` to your Render service URL and `CORS_ORIGINS` in Render to your Vercel URL.
+- **Backend**: Render (free tier). Uses the `render.yaml` blueprint in this repo.
+- **Frontend**: Vercel. Set `VITE_API_URL` to your Render service URL and `CORS_ORIGINS` in Render to your Vercel URL.
 
 Live demo: [mealwise-iota.vercel.app](https://mealwise-iota.vercel.app)
 
