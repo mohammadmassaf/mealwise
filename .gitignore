@@ -17,3 +17,6 @@ frontend/dist/
 
 # VS Code
 .vscode/
+CLAUDE.md
+.claude/
+.githooks/
